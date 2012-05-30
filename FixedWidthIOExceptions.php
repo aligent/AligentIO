@@ -20,3 +20,18 @@ class FixedWidthIOInputTooShortException extends FixedWidthIOException {}
  * Thrown when the input string is longer than the sum of fieldWidths 
  */
 class FixedWidthIOInputTooLongException extends FixedWidthIOException {}
+
+/**
+ * Thrown when a field exceeds its fieldWidth 
+ */
+class FixedWidthIOFieldOverflowException extends FixedWidthIOException {}
+
+/**
+ * Thrown when there are more fields than fieldWidths 
+ */
+class FixedWidthIOTooManyFieldsException extends FixedWidthIOException {}
+
+/**
+ * Thrown when there are less fields than fieldWidths 
+ */
+class FixedWidthIOTooFewFieldsException extends FixedWidthIOException {}

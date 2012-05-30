@@ -4,7 +4,6 @@ require_once 'FixedWidthIOExceptions.php';
 
 class FixedWidthIO {
 
-    // array str_getcsv ( string $input [, string $delimiter = ',' [, string $enclosure = '"' [, string $escape = '\\' ]]] )
     /**
      * Parse a fixed width string into an array.
      * 
@@ -15,6 +14,7 @@ class FixedWidthIO {
      * 
      * Assumptions:
      * Field values are rtrimmed.
+     * Field padding character is a space.
      * 
      * @param string $input       The string to parse.
      * @param int[]  $fieldWidths An array of ints. The keys of the array will
@@ -33,17 +33,14 @@ class FixedWidthIO {
         $array = array();
         $offset = 0;
         foreach ($fieldWidths as $key => $fieldWidth) {
-            if (!is_int($fieldWidth)) {
+            if (!is_int($fieldWidth) || $fieldWidth < 0) {
                 throw new FixedWidthIOIllegalParameterException(
-                        sprintf('fieldWidths must be and array of ints in %s',
-                                __METHOD__)
+                        sprintf('fieldWidths must be an array of ints in %s', __METHOD__)
                 );
             }
-            $fieldWidth = (int) $fieldWidth;
             if ($offset + $fieldWidth > $inputLength) {
                 throw new FixedWidthIOInputTooShortException(
-                        sprintf('Sum of fieldWidths exceeded the length of the input string in %s',
-                                __METHOD__)
+                        sprintf('Sum of fieldWidths exceeded the length of the input string in %s', __METHOD__)
                 );
             }
             $array[$key] = rtrim(substr($input, $offset, $fieldWidth));
@@ -51,11 +48,71 @@ class FixedWidthIO {
         }
         if ($offset < $inputLength) {
             throw new FixedWidthIOInputTooLongException(
-                    sprintf('The input string was longer than the sum of fieldWidths in %s',
-                            __METHOD__)
+                    sprintf('The input string was longer than the sum of fieldWidths in %s', __METHOD__)
             );
         }
         return $array;
+    }
+
+    /**
+     * Format an array as a fixed width string.
+     * 
+     * Formats a line (passed as a fields array) as a fixed width string.
+     * 
+     * Assumptions:
+     * Field padding character is a space.
+     * 
+     * @param mixed[] $fields       An array of string like things. Objects
+     *                              in this array will be cast to strings before
+     *                              processing. The keys of the array will be 
+     *                              ignored.
+     * @param int[]   $fieldWidths  An array of ints. The keys of the array will
+     *                              be ignored.
+     * @param bool $truncateFields  Whether or not to truncate fields. If this 
+     *                              flag is TRUE, fields will be truncated to 
+     *                              fit inside their corresponding fieldWidth.
+     *                              If this flag is set to FALSE and a field is
+     *                              longer than its fieldWidth, 
+     *                              FixedWidthIOFieldOverflowException will be
+     *                              thrown.
+     * @return string               The formatted string.
+     * @throws FixedWidthIOIllegalParameterException
+     * @throws FixedWidthIOTooManyFieldsException
+     * @throws FixedWidthIOTooFewFieldsException
+     * @throws FixedWidthIOFieldOverflowException Only thrown if $truncateFields === TRUE
+     */
+    public static function array_formatfw(array $fields, array $fieldWidths, $truncateFields = FALSE) {
+        if (!is_bool($truncateFields)) {
+            throw new FixedWidthIOIllegalParameterException(
+                    sprintf('truncateFields must be a boolean in %s', __METHOD__)
+            );
+        }
+        if (count($fields) < count($fieldWidths)) {
+            throw new FixedWidthIOTooFewFieldsException(
+                    sprintf('Number of fieldWidths is more than the number of fields in %s', __METHOD__)
+            );
+        } elseif (count($fields) > count($fieldWidths)) {
+            throw new FixedWidthIOTooManyFieldsException(
+                    sprintf('Number of fieldWidths is less than the number of fields in %s', __METHOD__)
+            );
+        }
+        $formattedString = '';
+        while (count($fields) > 0 && count($fieldWidths) > 0) {
+            $field = (string) array_shift($fields);
+            $fieldWidth = array_shift($fieldWidths);
+            if (!is_int($fieldWidth) || $fieldWidth < 0) {
+                throw new FixedWidthIOIllegalParameterException(
+                        sprintf('fieldWidths must be an array of ints in %s', __METHOD__)
+                );
+            }
+            if (!$truncateFields && strlen($field) > $fieldWidth) {
+                throw new FixedWidthIOFieldOverflowException(
+                        sprintf('Length of field is greater than the fieldWidth in %s', __METHOD__)
+                );
+            }
+            $formattedString .= str_pad(substr($field, 0, $fieldWidth), $fieldWidth, ' ', STR_PAD_RIGHT);
+        }
+        return $formattedString;
     }
 
 }
