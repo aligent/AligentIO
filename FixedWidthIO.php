@@ -115,4 +115,70 @@ class FixedWidthIO {
         return $formattedString;
     }
 
+    /**
+     * Format a line as a fixed width string and write to the file pointer.
+     * 
+     * Formats a line (passed as a fields array) as a fixed width string and
+     * writes it (terminated by a newline) to the specified file handle.
+     *
+     * @param resource $handle  The file pointer must be valid, and must point to
+     *                          a file successfully opened by 
+     *                          {@link http://www.php.net/manual/en/function.fopen.php fopen()}
+     *                          or {@link http://www.php.net/manual/en/function.fsockopen.php fsockopen()}
+     *                          (and not yet closed by
+     *                          {@link http://www.php.net/manual/en/function.fclose.php fclose()}).
+     * Assumptions:
+     * Field padding character is a space.
+     * 
+     * @param mixed[] $fields       An array of string like things. Objects
+     *                              in this array will be cast to strings before
+     *                              processing. The keys of the array will be 
+     *                              ignored.
+     * @param int[]   $fieldWidths  An array of ints. The keys of the array will
+     *                              be ignored.
+     * @param string|NULL  $endOfLineSeparator  An optional end of line delimiter.
+     *                              If this is null, the default PHP_EOL will be
+     *                              used. If the delimiter is found inside any 
+     *                              field, a 
+     *                              FixedWidthIOEndOfLineSeparatorContainedInLineException
+     *                              will be thrown.
+     *                              Passing of an empty string ('') is reserved
+     *                              for future use, and will throw a
+     *                              FixedWidthIONotImplementedYetException.
+     * @param bool $truncateFields  Whether or not to truncate fields. If this 
+     *                              flag is TRUE, fields will be truncated to 
+     *                              fit inside their corresponding fieldWidth.
+     *                              If this flag is set to FALSE and a field is
+     *                              longer than its fieldWidth, 
+     *                              FixedWidthIOFieldOverflowException will be
+     *                              thrown.
+     * @return int|bool             Returns the number of bytes written, or
+     *                              FALSE on error.
+     * @throws FixedWidthIOIllegalParameterException
+     * @throws FixedWidthIOTooManyFieldsException
+     * @throws FixedWidthIOTooFewFieldsException
+     * @throws FixedWidthIOFieldOverflowException Only thrown if $truncateFields === TRUE
+     * @throws FixedWidthIOEndOfLineSeparatorContainedInLineException
+     * @throws FixedWidthIONotImplementedYetException
+     * @todo test that stream_get_line accepts multi character string endings.
+     */
+    public static function fputfw($handle, array $fields, array $fieldWidths, $endOfLineSeparator = NULL, $truncateFields = FALSE) {
+        if (is_null($endOfLineSeparator)) {
+            $endOfLineSeparator = PHP_EOL;
+        }
+        $endOfLineSeparator = (string) $endOfLineSeparator;
+        if ('' == $endOfLineSeparator) {
+            throw new FixedWidthIONotImplementedYetException(
+                    sprintf('Empty string endOfLineSeparator is not implemented in %s', __METHOD__)
+            );
+        }
+        $formattedString = static::array_formatfw($fields, $fieldWidths, $truncateFields);
+        if (strpos($formattedString, $endOfLineSeparator) !== FALSE) {
+            throw new FixedWidthIOEndOfLineSeparatorContainedInLineException(
+                    sprintf("End of line separator '%s' found in line '%s' in %s", $endOfLineSeparator, $formattedString, __METHOD__)
+            );
+        }
+        return fwrite($handle, $formattedString . $endOfLineSeparator);
+    }
+
 }

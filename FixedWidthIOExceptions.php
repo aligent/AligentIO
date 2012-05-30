@@ -35,3 +35,13 @@ class FixedWidthIOTooManyFieldsException extends FixedWidthIOException {}
  * Thrown when there are less fields than fieldWidths 
  */
 class FixedWidthIOTooFewFieldsException extends FixedWidthIOException {}
+
+/**
+ * Thrown when attempting to write line which contains an end of line separator character. 
+ */
+class FixedWidthIOEndOfLineSeparatorContainedInLineException extends FixedWidthIOException {}
+
+/**
+ * Thrown when attempting to use unimplemented functionality
+ */
+class FixedWidthIONotImplementedYetException extends FixedWidthIOException {}

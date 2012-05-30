@@ -1,0 +1,12 @@
+vfsStream is used for unit testing file I/O functions.
+
+See https://github.com/mikey179/vfsStream and http://vfs.bovigo.org/
+for more details.
+
+To install vfsStream, Composer (a tool for dependency managment in PHP) is
+required.
+
+See http://getcomposer.org/doc/00-intro.md for more details.
+
+In short, run the following command in this directory (dependencies):
+php composer.phar install
