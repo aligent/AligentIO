@@ -1,47 +1,47 @@
 <?php
 
 /**
- * A generic exception for the FixedWidthIO package 
+ * A generic exception for the IO package 
  */
-class FixedWidthIOException extends Exception {}
+class IOException extends Exception {}
 
 /**
- * Thrown when an illegal parameter is passed to a function in the FixedWidthIO
+ * Thrown when an illegal parameter is passed to a function in the IO
  * package. 
  */
-class FixedWidthIOIllegalParameterException extends FixedWidthIOException {}
+class IOIllegalParameterException extends IOException {}
 
 /**
  * Thrown when the sum of the fieldWidths exceeds the length of the input string 
  */
-class FixedWidthIOInputTooShortException extends FixedWidthIOException {}
+class IOInputTooShortException extends IOException {}
 
 /**
  * Thrown when the input string is longer than the sum of fieldWidths 
  */
-class FixedWidthIOInputTooLongException extends FixedWidthIOException {}
+class IOInputTooLongException extends IOException {}
 
 /**
  * Thrown when a field exceeds its fieldWidth 
  */
-class FixedWidthIOFieldOverflowException extends FixedWidthIOException {}
+class IOFieldOverflowException extends IOException {}
 
 /**
  * Thrown when there are more fields than fieldWidths 
  */
-class FixedWidthIOTooManyFieldsException extends FixedWidthIOException {}
+class IOTooManyFieldsException extends IOException {}
 
 /**
  * Thrown when there are less fields than fieldWidths 
  */
-class FixedWidthIOTooFewFieldsException extends FixedWidthIOException {}
+class IOTooFewFieldsException extends IOException {}
 
 /**
  * Thrown when attempting to write line which contains an end of line separator character. 
  */
-class FixedWidthIOEndOfLineSeparatorContainedInLineException extends FixedWidthIOException {}
+class IOEndOfLineSeparatorContainedInLineException extends IOException {}
 
 /**
  * Thrown when attempting to use unimplemented functionality
  */
-class FixedWidthIONotImplementedYetException extends FixedWidthIOException {}
+class IONotImplementedYetException extends IOException {}

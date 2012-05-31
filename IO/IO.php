@@ -1,8 +1,8 @@
 <?php
 
-require_once 'FixedWidthIOExceptions.php';
+require_once 'IOExceptions.php';
 
-class FixedWidthIO {
+class IO {
 
     /**
      * Parse a fixed width string into an array.
@@ -23,9 +23,9 @@ class FixedWidthIO {
      * @return string[]           An array of strings indexed by the keys of 
      *                            $fieldWidths containing the (rtrimmed) string
      *                            values of the fields.
-     * @throws FixedWidthIOIllegalParameterException
-     * @throws FixedWidthIOInputTooShortException
-     * @throws FixedWidthIOInputTooLongException 
+     * @throws IOIllegalParameterException
+     * @throws IOInputTooShortException
+     * @throws IOInputTooLongException 
      */
     public static function str_getfw($input, array $fieldWidths) {
         $input = (string) $input;
@@ -34,12 +34,12 @@ class FixedWidthIO {
         $offset = 0;
         foreach ($fieldWidths as $key => $fieldWidth) {
             if (!is_int($fieldWidth) || $fieldWidth < 0) {
-                throw new FixedWidthIOIllegalParameterException(
+                throw new IOIllegalParameterException(
                         sprintf('fieldWidths must be an array of ints in %s', __METHOD__)
                 );
             }
             if ($offset + $fieldWidth > $inputLength) {
-                throw new FixedWidthIOInputTooShortException(
+                throw new IOInputTooShortException(
                         sprintf('Sum of fieldWidths exceeded the length of the input string in %s', __METHOD__)
                 );
             }
@@ -47,7 +47,7 @@ class FixedWidthIO {
             $offset += $fieldWidth;
         }
         if ($offset < $inputLength) {
-            throw new FixedWidthIOInputTooLongException(
+            throw new IOInputTooLongException(
                     sprintf('The input string was longer than the sum of fieldWidths in %s', __METHOD__)
             );
         }
@@ -73,26 +73,26 @@ class FixedWidthIO {
      *                              fit inside their corresponding fieldWidth.
      *                              If this flag is set to FALSE and a field is
      *                              longer than its fieldWidth, 
-     *                              FixedWidthIOFieldOverflowException will be
+     *                              IOFieldOverflowException will be
      *                              thrown.
      * @return string               The formatted string.
-     * @throws FixedWidthIOIllegalParameterException
-     * @throws FixedWidthIOTooManyFieldsException
-     * @throws FixedWidthIOTooFewFieldsException
-     * @throws FixedWidthIOFieldOverflowException Only thrown if $truncateFields === TRUE
+     * @throws IOIllegalParameterException
+     * @throws IOTooManyFieldsException
+     * @throws IOTooFewFieldsException
+     * @throws IOFieldOverflowException Only thrown if $truncateFields === TRUE
      */
     public static function array_formatfw(array $fields, array $fieldWidths, $truncateFields = FALSE) {
         if (!is_bool($truncateFields)) {
-            throw new FixedWidthIOIllegalParameterException(
+            throw new IOIllegalParameterException(
                     sprintf('truncateFields must be a boolean in %s', __METHOD__)
             );
         }
         if (count($fields) < count($fieldWidths)) {
-            throw new FixedWidthIOTooFewFieldsException(
+            throw new IOTooFewFieldsException(
                     sprintf('Number of fieldWidths is more than the number of fields in %s', __METHOD__)
             );
         } elseif (count($fields) > count($fieldWidths)) {
-            throw new FixedWidthIOTooManyFieldsException(
+            throw new IOTooManyFieldsException(
                     sprintf('Number of fieldWidths is less than the number of fields in %s', __METHOD__)
             );
         }
@@ -101,12 +101,12 @@ class FixedWidthIO {
             $field = (string) array_shift($fields);
             $fieldWidth = array_shift($fieldWidths);
             if (!is_int($fieldWidth) || $fieldWidth < 0) {
-                throw new FixedWidthIOIllegalParameterException(
+                throw new IOIllegalParameterException(
                         sprintf('fieldWidths must be an array of ints in %s', __METHOD__)
                 );
             }
             if (!$truncateFields && strlen($field) > $fieldWidth) {
-                throw new FixedWidthIOFieldOverflowException(
+                throw new IOFieldOverflowException(
                         sprintf('Length of field is greater than the fieldWidth in %s', __METHOD__)
                 );
             }
@@ -140,26 +140,26 @@ class FixedWidthIO {
      *                              If this is null, the default PHP_EOL will be
      *                              used. If the delimiter is found inside any 
      *                              field, a 
-     *                              FixedWidthIOEndOfLineSeparatorContainedInLineException
+     *                              IOEndOfLineSeparatorContainedInLineException
      *                              will be thrown.
      *                              Passing of an empty string ('') is reserved
      *                              for future use, and will throw a
-     *                              FixedWidthIONotImplementedYetException.
+     *                              IONotImplementedYetException.
      * @param bool $truncateFields  Whether or not to truncate fields. If this 
      *                              flag is TRUE, fields will be truncated to 
      *                              fit inside their corresponding fieldWidth.
      *                              If this flag is set to FALSE and a field is
      *                              longer than its fieldWidth, 
-     *                              FixedWidthIOFieldOverflowException will be
+     *                              IOFieldOverflowException will be
      *                              thrown.
      * @return int|bool             Returns the number of bytes written, or
      *                              FALSE on error.
-     * @throws FixedWidthIOIllegalParameterException
-     * @throws FixedWidthIOTooManyFieldsException
-     * @throws FixedWidthIOTooFewFieldsException
-     * @throws FixedWidthIOFieldOverflowException Only thrown if $truncateFields === TRUE
-     * @throws FixedWidthIOEndOfLineSeparatorContainedInLineException
-     * @throws FixedWidthIONotImplementedYetException
+     * @throws IOIllegalParameterException
+     * @throws IOTooManyFieldsException
+     * @throws IOTooFewFieldsException
+     * @throws IOFieldOverflowException Only thrown if $truncateFields === TRUE
+     * @throws IOEndOfLineSeparatorContainedInLineException
+     * @throws IONotImplementedYetException
      * @todo test that stream_get_line accepts multi character string endings.
      */
     public static function fputfw($handle, array $fields, array $fieldWidths, $endOfLineSeparator = NULL, $truncateFields = FALSE) {
@@ -168,13 +168,13 @@ class FixedWidthIO {
         }
         $endOfLineSeparator = (string) $endOfLineSeparator;
         if ('' == $endOfLineSeparator) {
-            throw new FixedWidthIONotImplementedYetException(
+            throw new IONotImplementedYetException(
                     sprintf('Empty string endOfLineSeparator is not implemented in %s', __METHOD__)
             );
         }
         $formattedString = static::array_formatfw($fields, $fieldWidths, $truncateFields);
         if (strpos($formattedString, $endOfLineSeparator) !== FALSE) {
-            throw new FixedWidthIOEndOfLineSeparatorContainedInLineException(
+            throw new IOEndOfLineSeparatorContainedInLineException(
                     sprintf("End of line separator '%s' found in line '%s' in %s", $endOfLineSeparator, $formattedString, __METHOD__)
             );
         }
