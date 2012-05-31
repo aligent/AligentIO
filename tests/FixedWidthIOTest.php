@@ -76,6 +76,36 @@ class FixedWidthIOTest extends PHPUnit_Framework_TestCase {
                 "\n",
                 FALSE,
                 "abc xyz \nfoo bar \n"
+            ),
+            array(
+                array(
+                    array('abc', 'xyz'),
+                    array('foo', 'bar')
+                ),
+                array(4, 4),
+                "\r\n",
+                FALSE,
+                "abc xyz \r\nfoo bar \r\n"
+            ),
+            array(
+                array(
+                    array('abc', 'xyz'),
+                    array('foo', 'bar')
+                ),
+                array(4, 4),
+                "|",
+                FALSE,
+                "abc xyz |foo bar |"
+            ),
+            array(
+                array(
+                    array('abc', 'xyz'),
+                    array('foo', 'bar')
+                ),
+                array(4, 4),
+                "<<<>>>",
+                FALSE,
+                "abc xyz <<<>>>foo bar <<<>>>"
             )
         );
     }
@@ -92,6 +122,37 @@ class FixedWidthIOTest extends PHPUnit_Framework_TestCase {
         $this->assertSame(17, $length, sprintf(
                         'Expected length was 17 (13 chars + 3 commas = 16 + \n), actual length was %s. ' .
                         'Perhaps the end of line character was not included?', $length)
+        );
+    }
+
+    public function testFputfwEolDefault() {
+        FixedWidthIO::fputfw($this->handle, array(''), array(0));
+        $fileContents = $this->file->getContent();
+        $this->assertSame(PHP_EOL, $fileContents, 'Empty generated file should at least contain one PHP_EOL character');
+    }
+
+    /**
+     * @expectedException FixedWidthIONotImplementedYetException 
+     */
+    public function testFputfwThrowsFixedWidthIONotImplementedYetException() {
+        FixedWidthIO::fputfw($this->handle, array('foo'), array(3), '', FALSE);
+    }
+
+    /**
+     * @expectedException FixedWidthIOEndOfLineSeparatorContainedInLineException 
+     * @dataProvider fputfwThrowsFixedWidthIOEndOfLineSeparatorContainedInLineExceptionProvider
+     */
+    public function testFputfwThrowsFixedWidthIOEndOfLineSeparatorContainedInLineException($fields, $fieldWidths, $endOfLineSeparator, $message = '') {
+        FixedWidthIO::fputfw($this->handle, $fields, $fieldWidths, $endOfLineSeparator);
+    }
+
+    public function fputfwThrowsFixedWidthIOEndOfLineSeparatorContainedInLineExceptionProvider() {
+        return array(
+            array(array('foo' . PHP_EOL), array(10), NULL, 'Should not allow default PHP_EOL line ending in field when using defaults'),
+            array(array("foo\n"), array(10), "\n", NULL, 'Should not allow \n in field when \n is set as line ending'),
+            array(array("foo\r\n"), array(10), "\r\n", NULL, 'Should not allow \r\n in field when \r\n is set as line ending'),
+            array(array("foo\r", "\nbar"), array(4, 4), "\r\n", 'Should now allow adjacent \r and \n in adjoining fields when \r\n is set as line ending'),
+            array(array("foo<<<", ">>>bar"), array(6, 6), '<<<>>>', '')
         );
     }
 
