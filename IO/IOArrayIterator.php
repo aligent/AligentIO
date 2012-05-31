@@ -1,77 +1,77 @@
 <?php
-require_once 'IOIteratorInterface.php';
-require_once 'array.php';
 
+require_once 'IOIteratorInterface.php';
 
 /**
  * class IOArrayIterator
  * 
  */
-class IOArrayIterator extends IOIteratorInterface
-            implements IOIteratorInterface
-{
-
-    /** Aggregations: */
-
-    /** Compositions: */
-
-     /*** Attributes: ***/
-
+class IOArrayIterator extends IOIteratorInterface implements IOIteratorInterface {
 
     /**
      * 
      *
-     * @param array array 
-
-     * @return void
-     * @access public
+     * @param array $array 
      */
-    public function __construct( $array ) {
-    } // end of member function __construct
-
-
+    public function __construct($array) {
+        
+    }
 
     /**
      * 
      *
      * @param IOFieldProperties[] fieldProperties An array of IOFieldProperties.
-If an array is provided, then all fields read will be expected to conform to the
-requirements specified in the properties.
-If NULL (default behaviour) then each row will return whatever fields are found
-without any validation.
-
-     * @param boolean hasHeaderRow Whether or not the file has a header row.
-If True, The header will be validated to ensure that the labels in the header
-field match the labels in fieldProperties.
-
-     * @return void
-     * @access public
+     *                                  If an array is provided, then all fields
+     *                                  read will be expected to conform to the
+     *                                  requirements specified in the properties.
+     *                                  If NULL (default behaviour) then each 
+     *                                  row will return whatever fields are 
+     *                                  found without any validation.
+     * @param boolean hasHeaderRow      Whether or not the file has a header row.
+     *                                  If True, The header will be validated to 
+     *                                  ensure that the labels in the header
+     *                                  field match the labels in fieldProperties.
      */
-    public function initialize( $fieldProperties = NULL,  $hasHeaderRow = FALSE ) {
-        trigger_error("Implement " . __FUNCTION__);
-    } // end of member function initialize
+    public function initialize(array $fieldProperties = NULL, $hasHeaderRow = FALSE) {
+        throw new IONotImplementedYetException();
+    }
 
     /**
      * 
      *
-     * @return void
-     * @access public
      */
-    public function getException( ) {
-        trigger_error("Implement " . __FUNCTION__);
-    } // end of member function getException
+    public function getException() {
+        throw new IONotImplementedYetException();
+    }
 
     /**
      * 
      *
      * @return boolean
-     * @access public
      */
-    public function isHeaderMatch( ) {
-        trigger_error("Implement " . __FUNCTION__);
-    } // end of member function isHeaderMatch
+    public function isHeaderMatch() {
+        throw new IONotImplementedYetException();
+    }
 
+    public function current() {
+        throw new IONotImplementedYetException();
+    }
 
+    public function key() {
+        throw new IONotImplementedYetException();
+    }
 
-} // end of IOArrayIterator
-?>
+    public function next() {
+        throw new IONotImplementedYetException();
+    }
+
+    public function rewind() {
+        throw new IONotImplementedYetException();
+    }
+
+    public function valid() {
+        throw new IONotImplementedYetException();
+    }
+
+}
+

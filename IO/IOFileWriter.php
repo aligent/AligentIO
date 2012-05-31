@@ -1,68 +1,48 @@
 <?php
-require_once 'IOWriterInterface.php';
-require_once 'IOWriterInterface.php';
-require_once 'resource.php';
 
+require_once 'IOWriterInterface.php';
 
 /**
  * class IoFileWriter
  * 
  */
-abstract class IOFileWriter extends IOWriterInterface    //WARNING: PHP5 does not support multiple inheritance but there is more than 1 superclass defined in your UML model!
-            implements IOWriterInterface
-{
-
-    /** Aggregations: */
-
-    /** Compositions: */
-
-     /*** Attributes: ***/
-
+abstract class IOFileWriter extends IOWriterInterface implements IOWriterInterface {
 
     /**
      * 
      *
-     * @param resource handle 
-
-     * @return void
-     * @access public
+     * @param resource $handle 
      */
-    public function __construct( $handle ) {
-    } // end of member function __construct
-
-
+    public function __construct($handle) {
+        throw new IONotImplementedYetException();
+    }
 
     /**
      * 
      *
-     * @param array fieldProperties_ 
+     * @param array     $fieldProperties
 
-     * @param boolean outputHeaderRow Whether or not to output a header row.
-The header row will be written immediately.
-Headers are taken from the fieldProperty label fields. No validation or
-formatting will be done on headers, and they will be silently truncated to fit
-within the field width.
-
-     * @return void
-     * @access public
+     * @param boolean   $outputHeaderRow    Whether or not to output a header 
+     *                                      row.The header row will be written
+     *                                      immediately. Headers are taken from
+     *                                      the fieldProperty label fields. No
+     *                                      validation or formatting will be 
+     *                                      done on headers, and they will be
+     *                                      silently truncated to fit within the
+     *                                      field width.
      */
-    public function initialize( $fieldProperties_ = NULL,  $outputHeaderRow = FALSE ) {
-        trigger_error("Implement " . __FUNCTION__);
-    } // end of member function initialize
+    public function initialize(array $fieldProperties = NULL, $outputHeaderRow = FALSE) {
+        throw new IONotImplementedYetException();
+    }
 
     /**
-     * @return int The number of bytes written.
+     * 
      *
      * @param array data The array of data to be written
-
-     * @return void
-     * @access public
+     * @return int The number of bytes written.
      */
-    public function write( $data ) {
-        trigger_error("Implement " . __FUNCTION__);
-    } // end of member function write
+    public function write(array $data) {
+        throw new IONotImplementedYetException();
+    }
 
-
-
-} // end of IoFileWriter
-?>
+}

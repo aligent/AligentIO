@@ -1,24 +1,18 @@
 <?php
-require_once 'IoFileWriter.php';
 
+require_once 'IoFileWriter.php';
 
 /**
  * class IOCSVFileWriter
  * 
  */
-class IOCSVFileWriter extends IOFileWriter
-{
+class IOCSVFileWriter extends IOFileWriter {
 
-    /** Aggregations: */
+    public function __construct($handle) {
+        throw new IONotImplementedYetException();
+        parent::__construct($handle);
+    }
 
-    /** Compositions: */
+}
 
-     /*** Attributes: ***/
-
-
-
-
-
-
-} // end of IOCSVFileWriter
 ?>
