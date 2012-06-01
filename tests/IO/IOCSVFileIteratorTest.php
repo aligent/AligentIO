@@ -171,10 +171,11 @@ EOD
     public function testNotIsHeaderMatch3ProducesIOTooManyFieldsException(IOCSVFileIterator $csvFileIterator) {
         $exception = $csvFileIterator->getException();
         $this->assertSame('IOTooManyFieldsException', get_class($exception));
+        return $csvFileIterator;
     }
 
     /**
-     * @depends testNotIsHeaderMatch3ProducesIOTooFewFieldsException
+     * @depends testNotIsHeaderMatch3ProducesIOTooManyFieldsException
      */
     public function testGetExceptionResetsAfterCall(IOCSVFileIterator $csvFileIterator) {
         $this->assertNull($csvFileIterator->getException(), 'getException() should return NULL on subsequent call');
