@@ -6,7 +6,7 @@ require_once 'IOIteratorInterface.php';
  * class IOFileIterator
  * 
  */
-abstract class IOFileIterator extends IOIteratorInterface implements IOIteratorInterface {
+class IOFileIterator extends IOIteratorInterface implements IOIteratorInterface {
 
     /**
      * 
@@ -14,7 +14,7 @@ abstract class IOFileIterator extends IOIteratorInterface implements IOIteratorI
      * @param resource $handle      A valid file pointer to a file successfully
      *                              opened by fopen(), popen(), or fsockopen().
      */
-    public function __construct($handle) {
+    public function __construct($handle, IOFileParserInterface $fileParser) {
         throw new IONotImplementedYetException();
     }
 
@@ -54,7 +54,9 @@ abstract class IOFileIterator extends IOIteratorInterface implements IOIteratorI
         throw new IONotImplementedYetException();
     }
 
-    public abstract function current();
+    public function current() {
+        throw new IONotImplementedYetException();
+    }
 
     public function key() {
         throw new IONotImplementedYetException();

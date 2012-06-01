@@ -1,19 +1,19 @@
 <?php
 
-require_once 'IOFileIterator.php';
+require_once 'IOFileParserInterface.php';
 
 /**
- * class IOFixedWidthFileIterator
+ * class IOCSVFileIterator
  * 
  */
-class IOFixedWidthFileIterator extends IOFileIterator {
+class IOCSVFileIterator implements IOFileParserInterface {
 
     public function __construct($handle) {
         throw new IONotImplementedYetException();
         parent::__construct($handle);
     }
 
-    public function current() {
+    public function readLine() {
         throw new IONotImplementedYetException();
     }
 
