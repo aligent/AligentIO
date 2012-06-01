@@ -41,8 +41,6 @@ abstract class IOFileWriter implements IOWriterInterface {
      * @param array data The array of data to be written
      * @return int The number of bytes written.
      */
-    public function write(array $data) {
-        throw new IONotImplementedYetException();
-    }
+    public abstract function write(array $data);
 
 }

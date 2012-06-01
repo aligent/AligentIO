@@ -8,7 +8,7 @@ require_once 'IOFileWriter.php';
  */
 class IOFixedWidthFileWriter extends IOFileWriter {
 
-    public function __construct($handle) {
+    public function write(array $data) {
         throw new IONotImplementedYetException();
     }
 
