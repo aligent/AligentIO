@@ -6,7 +6,7 @@ require_once 'IOWriterInterface.php';
  * class IoFileWriter
  * 
  */
-abstract class IOFileWriter extends IOWriterInterface implements IOWriterInterface {
+abstract class IOFileWriter implements IOWriterInterface {
 
     /**
      * 

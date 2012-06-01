@@ -1,7 +1,7 @@
 <?php
 
 /**
- * class IOIteratorInterface
+ * IOIteratorInterface
  * 
  */
 interface IOIteratorInterface extends Iterator {

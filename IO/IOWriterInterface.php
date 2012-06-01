@@ -26,6 +26,6 @@ interface IOWriterInterface {
      * @param array $data       The array of data to be written
      * @return int The number of bytes written.
      */
-    public function write($data);
+    public function write(array $data);
 
 }

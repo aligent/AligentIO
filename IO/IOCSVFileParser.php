@@ -6,7 +6,7 @@ require_once 'IOFileParserInterface.php';
  * class IOCSVFileIterator
  * 
  */
-class IOCSVFileIterator implements IOFileParserInterface {
+class IOCSVFileParser implements IOFileParserInterface {
     
     /**
      *

@@ -1,6 +1,6 @@
 <?php
 
-require_once 'IoFileWriter.php';
+require_once 'IOFileWriter.php';
 
 /**
  * class IOCSVFileWriter

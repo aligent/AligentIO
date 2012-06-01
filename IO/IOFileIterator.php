@@ -6,7 +6,7 @@ require_once 'IOIteratorInterface.php';
  * class IOFileIterator
  * 
  */
-class IOFileIterator extends IOIteratorInterface implements IOIteratorInterface {
+class IOFileIterator implements IOIteratorInterface {
 
     /**
      * 
