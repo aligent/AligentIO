@@ -7,31 +7,31 @@ require_once 'IOFileParserInterface.php';
  * 
  */
 class IOCSVFileParser implements IOFileParserInterface {
-    
+
     /**
      *
      * @var resource
      */
     private $handle = NULL;
-    
+
     /**
      *
      * @var int
      */
     private $length = 0;
-    
+
     /**
      *
      * @var char
      */
     private $delimiter = '';
-    
+
     /**
      *
      * @var char
      */
     private $enclosure = '';
-    
+
     /**
      *
      * @var char
@@ -47,8 +47,11 @@ class IOCSVFileParser implements IOFileParserInterface {
      * @param char      $escape
      */
     public function __construct($handle, $length = 0, $delimiter = ',', $enclosure = '"', $escape = '\\') {
-        throw new IONotImplementedYetException();
-        
+        $this->handle = $handle;
+        $this->length = $length;
+        $this->delimiter = $delimiter;
+        $this->enclosure = $enclosure;
+        $this->escape = $escape;
     }
 
     /**
@@ -56,7 +59,6 @@ class IOCSVFileParser implements IOFileParserInterface {
      * @return array|NULL|FALSE
      */
     public function readLine() {
-        throw new IONotImplementedYetException();
         return fgetcsv($this->handle, $this->length, $this->delimiter, $this->enclosure, $this->escape);
     }
 
