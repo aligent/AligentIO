@@ -1,7 +1,5 @@
 <?php
 
-require_once 'Iterator.php';
-
 /**
  * class IOIteratorInterface
  * 
@@ -23,7 +21,7 @@ interface IOIteratorInterface extends Iterator {
      *                                  ensure that the labels in the header
      *                                  field match the labels in fieldProperties.
      */
-    public function initialize($fieldProperties = NULL, $hasHeaderRow = FALSE);
+    public function initialize(array $fieldProperties = NULL, $hasHeaderRow = FALSE);
 
     /**
      * 

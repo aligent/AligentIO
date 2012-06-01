@@ -6,7 +6,7 @@ require_once 'IOIteratorInterface.php';
  * class IOArrayIterator
  * 
  */
-class IOArrayIterator extends IOIteratorInterface implements IOIteratorInterface {
+class IOArrayIterator implements IOIteratorInterface {
 
     /**
      * 
