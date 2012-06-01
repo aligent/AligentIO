@@ -20,7 +20,10 @@ interface IOIteratorInterface extends Iterator {
      *                                  If True, The header will be validated to
      *                                  ensure that the labels in the header
      *                                  field match the labels in fieldProperties.
-     */
+     * @return boolean                  Whether or not the supplied header fields
+     *                                  matched the label fields of the
+     *                                  ioFieldProperties array passed to 
+     *                                  initialize().     */
     public function initialize(array $fieldProperties = NULL, $hasHeaderRow = FALSE);
 
     /**
@@ -29,14 +32,5 @@ interface IOIteratorInterface extends Iterator {
      *                                  that caused current() to return false
      */
     public function getException();
-
-    /**
-     * 
-     * @return boolean                  Whether or not the supplied header fields
-     *                                  matched the label fields of the
-     *                                  ioFieldProperties array passed to 
-     *                                  initialize().
-     */
-    public function isHeaderMatch();
 
 }
