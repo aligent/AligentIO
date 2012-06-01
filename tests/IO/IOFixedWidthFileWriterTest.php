@@ -1,6 +1,9 @@
 <?php
 
 require_once dirname(__FILE__) . '/../../IO/IOFixedWidthFileWriter.php';
+require_once dirname(__FILE__) . '/../dependencies/vendor/autoload.php';
+
+use org\bovigo\vfs;
 
 /**
  * Test class for IOFixedWidthFileWriter.
@@ -8,17 +11,77 @@ require_once dirname(__FILE__) . '/../../IO/IOFixedWidthFileWriter.php';
  */
 class IOFixedWidthFileWriterTest extends PHPUnit_Framework_TestCase {
 
+    protected static $directory = '';
+    protected static $filename = '';
+    protected static $filePath = '';
+    protected static $streamUrl = '';
+    protected $handle = NULL;
+    protected $file = NULL;
+    protected static $expectedHeader = '';
+    protected static $expectedValues = '';
+    protected static $sampleData = array(
+        array('c1' => 1, 'c2' => 'One', 'c3' => 'Line One'),
+        array('c1' => 2, 'c2' => 'Two', 'c3' => 'Line Two'),
+        array('c1' => 3, 'c2' => 'Three', 'c3' => 'Line Three')
+    );
+//    Array(
+//        'name' => '', // The name to use as an index for any returned array of fields.
+//        'label' => '', // The Label used to validate the file headers.
+//        'fieldWidth' => NULL,
+//        'readProcessor' => NULL, // callable. Any type of callback than can be supplied as the $callback parameter of call_user_func. Must accept a single string argument (the field value to be procesed) and return either a string (the processed field value) or FALSE. A FALSE return value is used to indicate that validation has failed, and a subsequent ValidationException will be thrown.
+//        'writeProcessor' => NULL, // as per readProcessor.
+//        'allowTruncate' => FALSE,
+//    )
+
+    protected $fieldProperties = array(
+        array(
+            'name' => 'c1',
+            'label' => 'A',
+            'fieldWidth' => 1,
+            'readProcessor' => array('IOCSVFileIteratorTest', 'validateInt')
+        ),
+        array(
+            'name' => 'c2',
+            'label' => 'Col2',
+            'fieldWidth' => 5
+        ),
+        array(
+            'name' => 'c3',
+            'label' => 'Col3',
+            'fieldWidth' => 11
+        ),
+    );
+
     /**
-     * @var IOFixedWidthFileWriter
+     * @var type IOFixedWidthFileWriter
      */
-    protected $object;
+    protected $fwFileWriter = NULL;
+
+    public static function setUpBeforeClass() {
+        static::$directory = 'test';
+        static::$filename = 'test.fw';
+        static::$filePath = self::$directory . DIRECTORY_SEPARATOR . self::$filename;
+        static::$streamUrl = vfs\vfsStream::url(static::$filePath);
+        static::$expectedHeader = 
+                'ACol2 Col3       ' . PHP_EOL;
+        static::$expectedValues =
+//              '11234512345678901'
+                static::$expectedHeader .
+                '1One  Line One   ' . PHP_EOL .
+                '2Two  Line Two   ' . PHP_EOL .
+                '3ThreeLine Three ' . PHP_EOL;
+    }
 
     /**
      * Sets up the fixture, for example, opens a network connection.
      * This method is called before a test is executed.
      */
     protected function setUp() {
-//        $this->object = new IOFixedWidthFileWriter;
+        vfs\vfsStreamWrapper::register();
+        vfs\vfsStreamWrapper::setRoot(new vfs\vfsStreamDirectory('test'));
+        $this->handle = fopen(static::$streamUrl, 'w');
+        $this->file = vfs\vfsStreamWrapper::getRoot()->getChild(static::$filename);
+        $this->fwFileWriter = new IOFixedWidthFileWriter($this->handle);
     }
 
     /**
@@ -26,19 +89,47 @@ class IOFixedWidthFileWriterTest extends PHPUnit_Framework_TestCase {
      * This method is called after a test is executed.
      */
     protected function tearDown() {
-        
+//        fclose($this->handle);  // don't close the handle so tests can pass the object among themselves.
     }
 
+    public function testInitialize1() {
+        $this->fwFileWriter->initialize();
+        $this->assertTrue(TRUE, "Initialize doesn't do anything interesting on without any parameters.");
+        return $this->fwFileWriter;
+    }
+    
     /**
-     * @todo implement tests for this class 
+     * @depends  testInitialize1
+     * @expectedException IOObjectAlreadyInitializedException
      */
-    public function testMe() {
-        // Remove the following lines when you implement this test.
-        $this->markTestIncomplete(
-                'This test has not been implemented yet.'
-        );
+    public function testInitializeThrowsIOObjectAlreadyInitializedExceptionOnSecondInitializationAttempt(IOFixedWidthFileWriter $fwFileWriter) {
+        $fwFileWriter->initialize();
     }
-
+    
+    public function testInitializeOutputsHeaders() {
+        $this->fwFileWriter->initialize($this->fieldProperties, TRUE);
+        $actualHeader = $this->file->getContent();
+        $expectedHeader = static::$expectedHeader;
+        $this->assertSame($expectedHeader, $actualHeader);
+        return array($this->fwFileWriter, $this->file);
+    }
+    
+    /**
+     * @param array $args   A bit of a hack to get the fileWriter and the file
+     *                      from testInitializeOutputsHeaders into testWrite
+     * @depends  testInitializeOutputsHeaders
+     */
+    public function testWrite($args) {
+        $fwFileWriter = $args[0];
+        $file = $args[1];
+        $this->assertNotNull($fwFileWriter);
+        $this->assertCount(3, static::$sampleData);
+        foreach(static::$sampleData as $data) {
+            $this->assertTrue(!!$fwFileWriter->write($data));
+        }
+        $this->assertSame(static::$expectedValues, $file->getContent());
+    }
+    
 }
 
 ?>

@@ -18,7 +18,7 @@ interface IOWriterInterface {
      *                                      silently truncated to fit within the
      *                                      field width.
      */
-    public function initialize(array $fieldProperties = NULL, $outputHeaderRow = FALSE);
+    public function initialize($fieldProperties = NULL, $outputHeaderRow = FALSE, $truncateFields = FALSE);
 
     /**
      * 
