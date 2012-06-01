@@ -1,12 +1,12 @@
 <?php
 
-require_once 'IOFileParserInterface.php';
+require_once 'IOParserInterface.php';
 
 /**
  * class IOCSVFileIterator
  * 
  */
-class IOCSVFileParser implements IOFileParserInterface {
+class IOCSVFileParser implements IOParserInterface {
 
     /**
      *
@@ -40,7 +40,8 @@ class IOCSVFileParser implements IOFileParserInterface {
 
     /**
      *
-     * @param resource  $handle
+     * @param resource $handle      A valid file pointer to a file successfully
+     *                              opened by fopen(), popen(), or fsockopen().
      * @param int       $length
      * @param char      $delimiter
      * @param char      $enclosure

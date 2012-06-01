@@ -6,15 +6,14 @@ require_once 'IOIteratorInterface.php';
  * class IOFileIterator
  * 
  */
-class IOFileIterator implements IOIteratorInterface {
+class IOIterator implements IOIteratorInterface {
 
     /**
      * 
      *
-     * @param resource $handle      A valid file pointer to a file successfully
-     *                              opened by fopen(), popen(), or fsockopen().
+     * 
      */
-    public function __construct($handle, IOFileParserInterface $fileParser) {
+    public function __construct(IOParserInterface $parser) {
         throw new IONotImplementedYetException();
     }
 
