@@ -31,6 +31,14 @@ abstract class IOFileWriter implements IOWriterInterface {
      * 
      *
      * @param array     $fieldProperties
+      Array(
+      'name' => '', // The name to use as an index for any returned array of fields.
+      'label' => '', // The Label used to validate the file headers.
+      'fieldWidth' => NULL,
+      'readProcessor' => NULL, // callable. Any type of callback than can be supplied as the $callback parameter of call_user_func. Must accept a single string argument (the field value to be procesed) and return either a string (the processed field value) or FALSE. A FALSE return value is used to indicate that validation has failed, and a subsequent ValidationException will be thrown.
+      'writeProcessor' => NULL, // as per readProcessor.
+      'allowTruncate' => FALSE,
+      )
      * @param boolean   $outputHeaderRow    Whether or not to output a header 
      *                                      row.The header row will be written
      *                                      immediately. Headers are taken from
@@ -70,7 +78,7 @@ abstract class IOFileWriter implements IOWriterInterface {
         }
         if ($outputHeaderRow) {
             $this->truncateFields = TRUE; // Temporarily truncate fields for header output
-            $this->write($headers);
+            $this->_write($headers); // Do not format or validate headers.
         }
         $this->truncateFields = $truncateFields;
     }
@@ -80,9 +88,20 @@ abstract class IOFileWriter implements IOWriterInterface {
      *
      * @param array data The array of data to be written
      * @return int The number of bytes written.
+     * @throws IOTooFewFieldsException
+     * @throws IOTooManyFieldsException
+     * @throws IOIllegalParameterException
+     * @throws IOValidationErrorException 
      */
     public function write(array $data) {
         $this->initialized = TRUE;
+        return $this->_write(IO::_processFields($data, $this->fieldProperties, 'writeProcessor'));
     }
 
+    /**
+     * @param array data The array of sanitized data to be written
+     * @return int The number of bytes written.
+     */
+    protected abstract function _write(array $data);
+    
 }

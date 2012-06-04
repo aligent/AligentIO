@@ -181,4 +181,60 @@ class IO {
         return fwrite($handle, $formattedString . $endOfLineSeparator);
     }
 
+    /**
+     * This is an internal package function.
+     * Used to apply read/write processors to fields.
+     * @internal
+     * @param array $fields
+     * @param array $fieldProperties
+     * @param string $processorName       'readProcessor' || 'writeProcessor'
+     * @return array The processes fields
+     * @throws IOTooFewFieldsException
+     * @throws IOTooManyFieldsException
+     * @throws IOIllegalParameterException
+     * @throws IOValidationErrorException 
+     */
+    public static function _processFields($fields, $fieldProperties, $processorName) {
+        $fields = (array) $fields;
+        $fieldProperties = (array) $fieldProperties;
+        if (count($fieldProperties) === 0) {
+            return $fields;
+        } elseif (count($fields) < count($fieldProperties)) {
+            throw new IOTooFewFieldsException(
+                    sprintf('There were less fields than field properties')
+            );
+        } if (count($fields) > count($fieldProperties)) {
+            throw new IOTooManyFieldsException(
+                    sprintf('There were more fields than field properties')
+            );
+        }
+        $formattedFields = array();
+        $numericIndex = 0;
+        while (count($fields) > 0 && count($fieldProperties) > 0) {
+            $field = array_shift($fields);
+            $fieldProperty = array_shift($fieldProperties);
+            $index = isset($fieldProperty['name']) ? $fieldProperty['name'] : $numericIndex;
+            if (isset($fieldProperty[$processorName])) {
+                $processor = $fieldProperty[$processorName];
+                if (!is_callable($processor)) {
+                    throw new IOIllegalParameterException(
+                            sprintf("%s for field '%s' is not callable", $processorName, $index)
+                    );
+                }
+                $formattedFields[$index] = call_user_func($processor, $field);
+                if ($formattedFields[$index] === FALSE) {
+                    throw new IOValidationErrorException(
+                            'Field validation failed', 0, NULL, $fieldProperty, $field
+                    );
+                }
+            } else {
+                $formattedFields[$index] = $field;
+            }
+
+            $numericIndex++;
+        }
+
+        return $formattedFields;
+    }
+
 }

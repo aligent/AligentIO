@@ -20,7 +20,7 @@ class IOFixedWidthFileWriterTest extends PHPUnit_Framework_TestCase {
     protected static $expectedHeader = '';
     protected static $expectedValues = '';
     protected static $sampleData = array(
-        array('c1' => 1, 'c2' => 'One', 'c3' => 'Line One'),
+        array('c1' => 'A', 'c2' => 'One', 'c3' => 'Line One'),
         array('c1' => 2, 'c2' => 'Two', 'c3' => 'Line Two'),
         array('c1' => 3, 'c2' => 'Three', 'c3' => 'Line Three')
     );
@@ -38,7 +38,7 @@ class IOFixedWidthFileWriterTest extends PHPUnit_Framework_TestCase {
             'name' => 'c1',
             'label' => 'A',
             'fieldWidth' => 1,
-            'readProcessor' => array('IOCSVFileIteratorTest', 'validateInt')
+            'writeProcessor' => array('IOFixedWidthFileWriterTest', 'castInt')
         ),
         array(
             'name' => 'c2',
@@ -52,6 +52,10 @@ class IOFixedWidthFileWriterTest extends PHPUnit_Framework_TestCase {
         ),
     );
 
+    public static function castInt($value) {
+        return (int) $value;
+    }
+    
     /**
      * @var type IOFixedWidthFileWriter
      */
@@ -67,7 +71,7 @@ class IOFixedWidthFileWriterTest extends PHPUnit_Framework_TestCase {
         static::$expectedValues =
 //              '11234512345678901'
                 static::$expectedHeader .
-                '1One  Line One   ' . PHP_EOL .
+                '0One  Line One   ' . PHP_EOL . // (int) 'A' === 0
                 '2Two  Line Two   ' . PHP_EOL .
                 '3ThreeLine Three ' . PHP_EOL;
     }
@@ -128,6 +132,10 @@ class IOFixedWidthFileWriterTest extends PHPUnit_Framework_TestCase {
             $this->assertTrue(!!$fwFileWriter->write($data));
         }
         $this->assertSame(static::$expectedValues, $file->getContent());
+    }
+    
+    public function testIntAEqualsZero() {
+        $this->assertSame(0, (int) 'A');
     }
     
 }

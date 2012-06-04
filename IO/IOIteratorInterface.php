@@ -29,7 +29,8 @@ interface IOIteratorInterface extends Iterator {
     /**
      * 
      * @return Exception                Any kind of Exception that was thrown
-     *                                  that caused current() to return false
+     *                                  that caused current() to return false.
+     *                                  @see IOException
      */
     public function getException();
 

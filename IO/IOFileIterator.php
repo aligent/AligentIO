@@ -110,10 +110,6 @@ abstract class IOFileIterator implements IOIteratorInterface {
         return $isHeaderMatch;
     }
 
-    /**
-     * 
-     *
-     */
     public function getException() {
         $this->initialized = TRUE;
         $exception = $this->exception;
@@ -180,7 +176,7 @@ abstract class IOFileIterator implements IOIteratorInterface {
         $this->exception = NULL;
         try {
             $this->current = $this->parser->readLine();
-            $this->formattedCurrent = $this->formatCurrent();
+            $this->formattedCurrent = IO::_processFields($this->current, $this->fieldProperties, 'readProcessor');
         } catch (IOException $ioEx) {
             $this->current = FALSE;
             $this->formattedCurrent = FALSE;
@@ -218,53 +214,6 @@ abstract class IOFileIterator implements IOIteratorInterface {
     public function valid() {
         $this->initialized = TRUE;
         return $this->valid;
-    }
-
-    private function formatCurrent() {
-        $this->initialized = TRUE;
-        if (count($this->fieldProperties) <= 0) {
-            return $this->current;
-        }
-        $fields = $this->current;
-        $fieldProperties = $this->fieldProperties;
-        if (count($fieldProperties) === 0) {
-            return $fields;
-        } elseif (count($fields) < count($fieldProperties)) {
-            throw new IOTooFewFieldsException(
-                    sprintf('Less fields read than the specified fieldProperties in %s on line %s in input stream', __CLASS__, $this->key)
-            );
-        } elseif (count($fields) > count($fieldProperties)) {
-            throw new IOTooManyFieldsException(
-                    sprintf('More fields read than the specified fieldProperties in %s on line %s in input stream', __CLASS__, $this->key)
-            );
-        }
-        $formattedFields = array();
-        $numericIndex = 0;
-        while (count($fields) > 0 && count($fieldProperties) > 0) {
-            $field = array_shift($fields);
-            $fieldProperty = array_shift($fieldProperties);
-            $index = isset($fieldProperty['name']) ? $fieldProperty['name'] : $numericIndex;
-            if (isset($fieldProperty['readProcessor'])) {
-                $readProcessor = $fieldProperty['readProcessor'];
-                if (!is_callable($readProcessor)) {
-                    throw new IOIllegalParameterException(
-                            sprintf("readProcessor for field '%s' is not callable", $index)
-                    );
-                }
-                $formattedFields[$index] = call_user_func($readProcessor, $field);
-                if ($formattedFields[$index] === FALSE) {
-                    throw new IOValidationErrorException(
-                            'Field validation failed', 0, NULL, $fieldProperty, $field
-                    );
-                }
-            } else {
-                $formattedFields[$index] = $field;
-            }
-
-            $numericIndex++;
-        }
-
-        return $formattedFields;
     }
 
 }
