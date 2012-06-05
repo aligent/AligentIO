@@ -1,6 +1,7 @@
 <?php
 
 require_once 'IOIteratorInterface.php';
+require_once 'IO.php';
 
 /**
  * class IOFileIterator

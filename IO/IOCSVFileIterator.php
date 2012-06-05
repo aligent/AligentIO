@@ -1,6 +1,7 @@
 <?php
 
 require_once 'IOFileIterator.php';
+require_once 'IOCSVFileParser.php';
 
 class IOCSVFileIterator extends IOFileIterator {
     
