@@ -8,13 +8,17 @@ require_once 'IOIteratorInterface.php';
  */
 class IOArrayIterator implements IOIteratorInterface {
 
+    private $_data = array();
+    private $_error;
+
+    
     /**
-     * 
-     *
-     * @param array $array 
+     * @param array $aData The data we'll iterate through 
      */
-    public function __construct($array) {
-        
+    public function __construct($aData) {
+        if (is_array($aData)) {
+            $this->_data = $aData;
+        }
     }
 
     /**
@@ -36,12 +40,15 @@ class IOArrayIterator implements IOIteratorInterface {
         throw new IONotImplementedYetException();
     }
 
+    
     /**
      * 
-     *
+     * @return Exception                Any kind of Exception that was thrown
+     *                                  that caused current() to return false.
+     *                                  @see IOException
      */
     public function getException() {
-        throw new IONotImplementedYetException();
+        return $this->_error;
     }
 
     /**
@@ -53,24 +60,55 @@ class IOArrayIterator implements IOIteratorInterface {
         throw new IONotImplementedYetException();
     }
 
+    /**
+     * Implementing a simple array iterator for testing. 
+     */
     public function current() {
-        throw new IONotImplementedYetException();
+        $var = current($this->_data);
+        if (! is_array($var)) {
+            $this->_error = new Exception($var);
+            return false;
+        }
+        return $var;
     }
 
+    /**
+     * Implementing a simple array iterator for testing. 
+     */
     public function key() {
-        throw new IONotImplementedYetException();
+        $var = key($this->_data);
+        return $var;
     }
 
+
+    /**
+     * Implementing a simple array iterator for testing. 
+     */
     public function next() {
-        throw new IONotImplementedYetException();
+        $var = next($this->_data);
+        if (! is_array($var)) {
+            $this->_error = new Exception($var);
+            return false;
+        }
+        return $var;
     }
 
+    
+    /**
+     * Implementing a simple array iterator for testing. 
+     */
     public function rewind() {
-        throw new IONotImplementedYetException();
+        reset($this->_data);
     }
 
+    
+    /**
+     * Implementing a simple array iterator for testing. 
+     */
     public function valid() {
-        throw new IONotImplementedYetException();
+        $key = key($this->_data);
+        $var = ($key !== NULL && $key !== FALSE);
+        return $var;
     }
 
 }
