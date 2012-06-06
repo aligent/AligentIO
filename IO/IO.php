@@ -201,11 +201,11 @@ class IO {
             return $fields;
         } elseif (count($fields) < count($fieldProperties)) {
             throw new IOTooFewFieldsException(
-                    sprintf('There were less fields than field properties')
+                    sprintf('There were less fields ('.count($fields).') than field properties ('.count($fieldProperties).')')
             );
         } if (count($fields) > count($fieldProperties)) {
             throw new IOTooManyFieldsException(
-                    sprintf('There were more fields than field properties')
+                    sprintf('There were more fields ('.count($fields).') than field properties ('.count($fieldProperties).')')
             );
         }
         $formattedFields = array();
