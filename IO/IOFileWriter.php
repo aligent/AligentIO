@@ -98,13 +98,13 @@ abstract class IOFileWriter implements IOWriterInterface {
         if (is_null($fieldProcessor)) {
             $fieldProcessor = $this->_fieldProcessor;
         }
-        return $this->_write($fieldProcessor->processFields($data, 'writeProcessor'));
+        return $this->_write($fieldProcessor->processFields($data, 'writeProcessor'), $fieldProcessor);
     }
 
     /**
      * @param array data The array of sanitized data to be written
      * @return int The number of bytes written.
      */
-    protected abstract function _write(array $data);
+    protected abstract function _write(array $data, IOFieldProcessor $fieldProcessor);
     
 }
