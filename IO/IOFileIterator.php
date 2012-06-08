@@ -86,7 +86,8 @@ abstract class IOFileIterator implements IOIteratorInterface {
      * NOTE: Calling initialize is optional, however if it is called, it 
      * **MUST** be called befor any other methods.
      *
-     * @param IOFieldProperties[] fieldProperties An array of IOFieldProperties.
+     * @param array|IOFieldProcessor $fieldProperties
+     *                              An array of IOFieldProperties.
      *                              If an array is provided, then all fields 
      *                              read will be expected to conform to the
      *                              requirements specified in the properties.
@@ -106,8 +107,11 @@ abstract class IOFileIterator implements IOIteratorInterface {
             );
         }
         $this->initialized = TRUE;
-        $this->_fieldProcessor = new IOFieldProcessor((array) $fieldProperties);
-        $this->hasHeaderRow = $hasHeaderRow;
+        if (is_a($fieldProperties, 'IOFieldProcessor')) {
+            $this->_fieldProcessor = $fieldProperties;
+        } else {
+            $this->_fieldProcessor = new IOFieldProcessor((array) $fieldProperties);
+        }        $this->hasHeaderRow = $hasHeaderRow;
         $isHeaderMatch = $this->isHeaderMatch();
         $this->rewind();
         return $isHeaderMatch;

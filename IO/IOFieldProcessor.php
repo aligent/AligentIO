@@ -19,6 +19,19 @@ class IOFieldProcessor {
     
     private static $instance = 0;
     
+    /**
+     * @param array $fieldProperties an array of field properties in the following
+     * format:
+      Array(
+        'name' => '', // The name to use as an index for any returned array of fields.
+        'label' => '', // The Label used to validate the file headers.
+        'fieldWidth' => NULL,
+        'readProcessor' => NULL, // callable. Any type of callback than can be supplied as the $callback parameter of call_user_func. Must accept a single string argument (the field value to be procesed) and return either a string (the processed field value) or FALSE. A FALSE return value is used to indicate that validation has failed, and a subsequent ValidationException will be thrown.
+        'writeProcessor' => NULL, // as per readProcessor.
+        'allowTruncate' => FALSE,
+      )
+     * 
+     */
     public function __construct(array $fieldProperties = array()) {
         $this->_fieldProperties = $fieldProperties;
         $instance = ++static::$instance;

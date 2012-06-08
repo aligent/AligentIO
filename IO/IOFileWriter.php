@@ -36,7 +36,7 @@ abstract class IOFileWriter implements IOWriterInterface {
     /**
      * 
      *
-     * @param array     $fieldProperties
+     * @param array|IOFieldProcessor $fieldProperties
       Array(
       'name' => '', // The name to use as an index for any returned array of fields.
       'label' => '', // The Label used to validate the file headers.
@@ -62,7 +62,11 @@ abstract class IOFileWriter implements IOWriterInterface {
             );
         }
         $this->initialized = TRUE;
-        $this->_fieldProcessor = new IOFieldProcessor((array) $fieldProperties);
+        if (is_a($fieldProperties, 'IOFieldProcessor')) {
+            $this->_fieldProcessor = $fieldProperties;
+        } else {
+            $this->_fieldProcessor = new IOFieldProcessor((array) $fieldProperties);
+        }
         if ($outputHeaderRow) {
             $this->truncateFields = TRUE; // Temporarily truncate fields for header output
             $this->_write($this->_fieldProcessor->getHeaders()); // Do not format or validate headers.
@@ -74,15 +78,27 @@ abstract class IOFileWriter implements IOWriterInterface {
      * 
      *
      * @param array data The array of data to be written
+     * @param IOFieldProcessor $fieldProcessor  An optional IOFieldProcessor to
+     *                                          use for THIS LINE ONLY.
+     *                                          If $fieldProcessor is supplied, 
+     *                                          then it will override the 
+     *                                          $fieldProperties supplied to 
+     *                                          initialize().
+     *                                          If $fieldProcessor is NULL (default)
+     *                                          then the $fieldProperties supplied 
+     *                                          to initialize() will be used.
      * @return int The number of bytes written.
      * @throws IOTooFewFieldsException
      * @throws IOTooManyFieldsException
      * @throws IOIllegalParameterException
      * @throws IOValidationErrorException 
      */
-    public function write(array $data) {
+    public function write(array $data, IOFieldProcessor $fieldProcessor = NULL) {
         $this->initialized = TRUE;
-        return $this->_write($this->_fieldProcessor->processFields($data, 'writeProcessor'));
+        if (is_null($fieldProcessor)) {
+            $fieldProcessor = $this->_fieldProcessor;
+        }
+        return $this->_write($fieldProcessor->processFields($data, 'writeProcessor'));
     }
 
     /**
