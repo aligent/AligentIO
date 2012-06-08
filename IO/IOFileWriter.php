@@ -1,6 +1,7 @@
 <?php
 
 require_once 'IOWriterInterface.php';
+require_once 'IOFieldProcessor.php';
 
 /**
  * class IoFileWriter
@@ -13,10 +14,14 @@ abstract class IOFileWriter implements IOWriterInterface {
      * @var resource
      */
     protected $handle = NULL;
-    private $fieldProperties = array();
     protected $truncateFields = FALSE;
     protected $fieldWidths = NULL;
     private $initialized = FALSE;
+    
+    /**
+     * @var IOFieldProcessor
+     */
+    protected $_fieldProcessor = NULL;
 
     /**
      * 
@@ -25,6 +30,7 @@ abstract class IOFileWriter implements IOWriterInterface {
      */
     public function __construct($handle) {
         $this->handle = $handle;
+        $this->_fieldProcessor = new IOFieldProcessor();
     }
 
     /**
@@ -56,29 +62,10 @@ abstract class IOFileWriter implements IOWriterInterface {
             );
         }
         $this->initialized = TRUE;
-        if (is_null($fieldProperties)) {
-            $fieldProperties = array();
-        }
-        $this->fieldProperties = $fieldProperties;
-        // Note: headers are built regardless of whether they are needed. I need
-        // to loop through the array anyway to get the fieldwidths.
-        $headers = array();
-        $this->fieldWidths = array();
-        $numericalIndex = 0;
-        foreach ($fieldProperties as $fieldProperty) {
-            if (!isset($fieldProperty['fieldWidth'])) {
-                throw new IOIllegalParameterException(
-                        sprintf('fieldWidth must be set in fieldProperties for each field of a %s in %s', __CLASS__, __METHOD__)
-                );
-            }
-            $this->fieldWidths[] = $fieldProperty['fieldWidth'];
-            $label = isset($fieldProperty['label']) ? $fieldProperty['label'] : $numericalIndex;
-            $numericalIndex++;
-            $headers[] = $label;
-        }
+        $this->_fieldProcessor = new IOFieldProcessor((array) $fieldProperties);
         if ($outputHeaderRow) {
             $this->truncateFields = TRUE; // Temporarily truncate fields for header output
-            $this->_write($headers); // Do not format or validate headers.
+            $this->_write($this->_fieldProcessor->getHeaders()); // Do not format or validate headers.
         }
         $this->truncateFields = $truncateFields;
     }
@@ -95,7 +82,7 @@ abstract class IOFileWriter implements IOWriterInterface {
      */
     public function write(array $data) {
         $this->initialized = TRUE;
-        return $this->_write(IO::_processFields($data, $this->fieldProperties, 'writeProcessor'));
+        return $this->_write($this->_fieldProcessor->processFields($data, 'writeProcessor'));
     }
 
     /**

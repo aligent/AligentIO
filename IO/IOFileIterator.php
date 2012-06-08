@@ -1,6 +1,7 @@
 <?php
 
 require_once 'IOIteratorInterface.php';
+require_once 'IOFieldProcessor.php';
 require_once 'IO.php';
 
 /**
@@ -49,11 +50,6 @@ abstract class IOFileIterator implements IOIteratorInterface {
     private $initialized = FALSE;
 
     /**
-     * @var array
-     */
-    private $fieldProperties = array();
-
-    /**
      * @var boolean
      */
     private $hasHeaderRow = FALSE;
@@ -65,6 +61,11 @@ abstract class IOFileIterator implements IOIteratorInterface {
      */
     private $headerRow = array();
     private $exception = NULL;
+    
+    /**
+     * @var IOFieldProcessor
+     */
+    private $_fieldProcessor = null;
 
     /**
      * 
@@ -76,6 +77,7 @@ abstract class IOFileIterator implements IOIteratorInterface {
     public function __construct($handle, IOParserInterface $parser) {
         $this->handle = $handle;
         $this->parser = $parser;
+        $this->_fieldProcessor = new IOFieldProcessor();
         $this->rewind(); // Note this sets initialezed === TRUE, so set it back to FALSE.
         $this->initialized = FALSE;
     }
@@ -104,7 +106,7 @@ abstract class IOFileIterator implements IOIteratorInterface {
             );
         }
         $this->initialized = TRUE;
-        $this->fieldProperties = $fieldProperties;
+        $this->_fieldProcessor = new IOFieldProcessor((array) $fieldProperties);
         $this->hasHeaderRow = $hasHeaderRow;
         $isHeaderMatch = $this->isHeaderMatch();
         $this->rewind();
@@ -133,19 +135,8 @@ abstract class IOFileIterator implements IOIteratorInterface {
             return TRUE;
         }
         $headerRow = $this->headerRow = $this->current;
-        $fieldProperties = $this->fieldProperties;
-        if (count($fieldProperties) !== count($headerRow)) {
-            return FALSE;
-        }
-        while (count($fieldProperties) > 0 && count($headerRow) > 0) {
-            $fieldProperty = array_shift($fieldProperties);
-            $header = array_shift($headerRow);
-            if ($fieldProperty['label'] !== $header) {
-                return FALSE;
-            }
-        }
-
-        return TRUE;
+        
+        return $this->_fieldProcessor->isHeaderMatch($headerRow);
     }
 
     /**
@@ -177,7 +168,7 @@ abstract class IOFileIterator implements IOIteratorInterface {
         $this->exception = NULL;
         try {
             $this->current = $this->parser->readLine();
-            $this->formattedCurrent = IO::_processFields($this->current, $this->fieldProperties, 'readProcessor');
+            $this->formattedCurrent = $this->_fieldProcessor->processFields($this->current, 'readProcessor');
         } catch (IOException $ioEx) {
             $this->current = FALSE;
             $this->formattedCurrent = FALSE;
