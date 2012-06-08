@@ -1,5 +1,7 @@
 <?php
 
+require_once 'IOExceptions.php';
+
 interface IOParserInterface {
     
     /**

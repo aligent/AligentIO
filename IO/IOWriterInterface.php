@@ -1,4 +1,6 @@
 <?php
+require_once 'IOExceptions.php';
+
 /**
  * class IOWriterInterface
  * 
