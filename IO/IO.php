@@ -107,7 +107,7 @@ class IO {
             }
             if (!$truncateFields && strlen($field) > $fieldWidth) {
                 throw new IOFieldOverflowException(
-                        sprintf('Length of field is greater than the fieldWidth in %s', __METHOD__)
+                        sprintf('Length of field is greater than the fieldWidth in %s, value = %s', __METHOD__, $field)
                 );
             }
             $formattedString .= str_pad(substr($field, 0, $fieldWidth), $fieldWidth, ' ', STR_PAD_RIGHT);
