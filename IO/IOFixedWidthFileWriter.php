@@ -1,5 +1,6 @@
 <?php
 
+require_once 'IO.php';
 require_once 'IOFileWriter.php';
 
 /**
