@@ -17,6 +17,7 @@ abstract class IOFileWriter implements IOWriterInterface {
     protected $truncateFields = FALSE;
     protected $fieldWidths = NULL;
     private $initialized = FALSE;
+    private $linesWritten = 0;
     
     /**
      * @var IOFieldProcessor
@@ -99,6 +100,18 @@ abstract class IOFileWriter implements IOWriterInterface {
             $fieldProcessor = $this->_fieldProcessor;
         }
         return $this->_write($fieldProcessor->processFields($data, 'writeProcessor'), $fieldProcessor);
+    }
+    
+    public function setLinesWritten(int $iLinesWritten){
+        $this->linesWritten += $iLinesWritten;
+    }
+    
+    public function getLinesWritten(){
+        return $this->linesWritten;
+    }
+    
+    public function incLinesWritten(){
+        $this->linesWritten ++;
     }
 
     /**
