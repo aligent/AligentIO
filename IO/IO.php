@@ -40,7 +40,7 @@ class IO {
             }
             if ($offset + $fieldWidth > $inputLength) {
                 throw new IOInputTooShortException(
-                        sprintf('Sum of fieldWidths exceeded the length of the input string in %s', __METHOD__)
+                        sprintf('Sum of fieldWidths (%d) exceeded the length of the input string (%d) in %s', ($offset + $fieldWidth), $inputLength, __METHOD__)
                 );
             }
             $array[$key] = rtrim(substr($input, $offset, $fieldWidth));
@@ -48,7 +48,7 @@ class IO {
         }
         if ($offset < $inputLength) {
             throw new IOInputTooLongException(
-                    sprintf('The input string was longer than the sum of fieldWidths in %s', __METHOD__)
+                    sprintf('The input string (%d) was longer than the sum of fieldWidths (%d) in %s', $inputLength, $offset, __METHOD__)
             );
         }
         return $array;
@@ -89,11 +89,11 @@ class IO {
         }
         if (count($fields) < count($fieldWidths)) {
             throw new IOTooFewFieldsException(
-                    sprintf('Number of fieldWidths is more than the number of fields in %s', __METHOD__)
+                    sprintf('Number of fieldWidths (%d) is more than the number of fields (%d) in %s', count($fieldWidths), count($fields), __METHOD__)
             );
         } elseif (count($fields) > count($fieldWidths)) {
             throw new IOTooManyFieldsException(
-                    sprintf('Number of fieldWidths is less than the number of fields in %s', __METHOD__)
+                    sprintf('Number of fieldWidths (%d) is less than the number of fields (%d) in %s', count($fieldWidths), count($fields), __METHOD__)
             );
         }
         $formattedString = '';
@@ -107,7 +107,7 @@ class IO {
             }
             if (!$truncateFields && strlen($field) > $fieldWidth) {
                 throw new IOFieldOverflowException(
-                        sprintf('Length of field is greater than the fieldWidth in %s, value = %s', __METHOD__, $field)
+                        sprintf('Length of field %s (%d) is greater than the fieldWidth (%d) in %s', $field, strlen($field), $fieldWidth, __METHOD__, $field)
                 );
             }
             $formattedString .= str_pad(substr($field, 0, $fieldWidth), $fieldWidth, ' ', STR_PAD_RIGHT);
