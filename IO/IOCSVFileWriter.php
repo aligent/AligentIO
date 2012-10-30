@@ -8,10 +8,8 @@ require_once 'IOFileWriter.php';
  */
 class IOCSVFileWriter extends IOFileWriter {
 
-    protected function _write(array $data) {
+    protected function _write(array $data, IOFieldProcessor $fieldProcessor) {
         throw new IONotImplementedYetException();
     }
 
 }
-
-?>

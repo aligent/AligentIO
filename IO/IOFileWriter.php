@@ -70,7 +70,7 @@ abstract class IOFileWriter implements IOWriterInterface {
         }
         if ($outputHeaderRow) {
             $this->truncateFields = TRUE; // Temporarily truncate fields for header output
-            $this->_write($this->_fieldProcessor->getHeaders()); // Do not format or validate headers.
+            $this->_write($this->_fieldProcessor->getHeaders(), $this->_fieldProcessor); // Added validator as it is required by the _write() method.
         }
         $this->truncateFields = $truncateFields;
     }

@@ -17,8 +17,6 @@ class IOFieldProcessor {
     private $_headers = NULL;
     private $_fieldWidths = NULL;
     
-    private static $instance = 0;
-    
     /**
      * @param array $fieldProperties an array of field properties in the following
      * format:
@@ -34,7 +32,6 @@ class IOFieldProcessor {
      */
     public function __construct(array $fieldProperties = array()) {
         $this->_fieldProperties = $fieldProperties;
-        $instance = ++static::$instance;
     }
     
     /**
@@ -92,7 +89,6 @@ class IOFieldProcessor {
      * @throws IOValidationErrorException 
      */
     public function processFields($fields, $processorName) {
-        $instance = static::$instance;
         $fields = (array) $fields;
         $fieldProperties = $this->_fieldProperties;
         if (count($fieldProperties) === 0) {
