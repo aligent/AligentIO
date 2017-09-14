@@ -1,0 +1,5 @@
+{
+    "name": "aligent/aligent-io",
+    "description": "Delimited and fixed width file reader.",
+    "require": {}
+}
