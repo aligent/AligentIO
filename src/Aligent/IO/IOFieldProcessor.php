@@ -1,5 +1,10 @@
 <?php
-require_once 'IOExceptions.php';
+namespace Aligent\IO;
+
+use Aligent\IO\Exception\IOTooFewFieldsException;
+use Aligent\IO\Exception\IOTooManyFieldsException;
+use Aligent\IO\Exception\IOIllegalParameterException;
+use Aligent\IO\Exception\IOValidationErrorException;
 
 /*
  * To change this template, choose Tools | Templates

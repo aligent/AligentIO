@@ -1,6 +1,5 @@
 <?php
-
-require_once 'IOExceptions.php';
+namespace Aligent\IO;
 
 interface IOParserInterface {
     

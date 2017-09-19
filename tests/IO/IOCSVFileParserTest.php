@@ -1,9 +1,9 @@
 <?php
-
-require_once dirname(__FILE__) . '/../../IO/IOCSVFileParser.php';
+require_once dirname(__FILE__) . "/../../vendor/autoload.php";
 require_once dirname(__FILE__) . '/../dependencies/vendor/autoload.php';
 
 use org\bovigo\vfs;
+use Aligent\IO\IOCSVFileParser;
 
 /**
  * Test class for IOCSVFileParser.

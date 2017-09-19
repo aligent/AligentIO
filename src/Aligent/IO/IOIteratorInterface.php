@@ -1,12 +1,11 @@
 <?php
-
-require_once 'IOExceptions.php';
+namespace Aligent\IO;
 
 /**
  * IOIteratorInterface
  * 
  */
-interface IOIteratorInterface extends Iterator {
+interface IOIteratorInterface extends \Iterator {
 
     /**
      * 
@@ -30,7 +29,7 @@ interface IOIteratorInterface extends Iterator {
 
     /**
      * 
-     * @return Exception                Any kind of Exception that was thrown
+     * @return \Exception                Any kind of Exception that was thrown
      *                                  that caused current() to return false.
      *                                  @see IOException
      */

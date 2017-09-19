@@ -1,7 +1,8 @@
 <?php
+namespace Aligent\IO;
 
-require_once 'IOFileIterator.php';
-require_once 'IOCSVFileParser.php';
+use Aligent\IO\IOFileIterator;
+use Aligent\IO\IOCSVFileParser;
 
 class IOCSVFileIterator extends IOFileIterator {
     

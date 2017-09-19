@@ -1,9 +1,9 @@
 <?php
-
-require_once dirname(__FILE__) . '/../../IO/IOCSVFileIterator.php';
+require_once dirname(__FILE__) . "/../../vendor/autoload.php";
 require_once dirname(__FILE__) . '/../dependencies/vendor/autoload.php';
 
 use org\bovigo\vfs;
+use Aligent\IO\IOCSVFileIterator;
 
 /**
  * Test class for IOFileIterator.

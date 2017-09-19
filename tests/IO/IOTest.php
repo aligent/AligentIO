@@ -1,9 +1,9 @@
 <?php
-
-require_once dirname(__FILE__) . '/../../IO/IO.php';
+require_once dirname(__FILE__) . "/../../vendor/autoload.php";
 require_once dirname(__FILE__) . '/../dependencies/vendor/autoload.php';
 
 use org\bovigo\vfs;
+use Aligent\IO\IO;
 
 /**
  * Test class for IO.
@@ -132,14 +132,14 @@ class IOTest extends PHPUnit_Framework_TestCase {
     }
 
     /**
-     * @expectedException IONotImplementedYetException 
+     * @expectedException Aligent\IO\Exception\IONotImplementedYetException
      */
     public function testFputfwThrowsIONotImplementedYetException() {
         IO::fputfw($this->handle, array('foo'), array(3), '', FALSE);
     }
 
     /**
-     * @expectedException IOEndOfLineSeparatorContainedInLineException 
+     * @expectedException Aligent\IO\Exception\IOEndOfLineSeparatorContainedInLineException
      * @dataProvider fputfwThrowsIOEndOfLineSeparatorContainedInLineExceptionProvider
      */
     public function testFputfwThrowsIOEndOfLineSeparatorContainedInLineException($fields, $fieldWidths, $endOfLineSeparator, $message = '') {

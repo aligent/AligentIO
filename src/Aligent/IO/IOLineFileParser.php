@@ -1,6 +1,5 @@
 <?php
-
-require_once 'IOParserInterface.php';
+namespace Aligent\IO;
 
 /**
  *

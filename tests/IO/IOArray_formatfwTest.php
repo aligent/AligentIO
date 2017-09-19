@@ -1,6 +1,7 @@
 <?php
+require_once dirname(__FILE__) . "/../../vendor/autoload.php";
 
-require_once dirname(__FILE__) . '/../../IO/IO.php';
+use Aligent\IO\IO;
 
 /**
  * Test class for IO::array_formatfw.
@@ -29,7 +30,7 @@ class IOArrray_formatfwTest extends PHPUnit_Framework_TestCase {
     }
 
     /**
-     * @expectedException IOIllegalParameterException
+     * @expectedException Aligent\IO\Exception\IOIllegalParameterException
      * @dataProvider array_formatfwThrowsIOIllegalParameterExceptionProvider
      */
     public function testArray_formatfwThrowsIOIllegalParameterException(array $fields, array $fieldWidths, $truncateFields, $message) {
@@ -48,7 +49,7 @@ class IOArrray_formatfwTest extends PHPUnit_Framework_TestCase {
     }
 
     /**
-     * @expectedException IOTooManyFieldsException
+     * @expectedException Aligent\IO\Exception\IOTooManyFieldsException
      * @dataProvider array_formatfwThrowsIOTooManyFieldsExceptionProvider
      */
     public function testArray_formatfwThrowsIOTooManyFieldsException(array $fields, array $fieldWidths) {
@@ -65,7 +66,7 @@ class IOArrray_formatfwTest extends PHPUnit_Framework_TestCase {
     }
 
     /**
-     * @expectedException IOTooFewFieldsException
+     * @expectedException Aligent\IO\Exception\IOTooFewFieldsException
      * @dataProvider array_formatfwThrowsIOTooFewFieldsExceptionProvider
      */
     public function testArray_formatfwThrowsIOTooFewFieldsException(array $fields, array $fieldWidths) {
@@ -82,7 +83,7 @@ class IOArrray_formatfwTest extends PHPUnit_Framework_TestCase {
     }
 
     /**
-     * @expectedException IOFieldOverflowException
+     * @expectedException Aligent\IO\Exception\IOFieldOverflowException
      * @dataProvider array_formatfwThrowsIOFieldOverflowExceptionProvider
      */
     public function testArray_formatfwThrowsIOFieldOverflowException(array $fields, array $fieldWidths) {

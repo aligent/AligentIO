@@ -1,7 +1,7 @@
 <?php
+namespace Aligent\IO;
 
-require_once 'IOFileIterator.php';
-require_once 'IOLineFileParser.php';
+use Aligent\IO\IOLineFileParser;
 
 /**
  * @author luke
