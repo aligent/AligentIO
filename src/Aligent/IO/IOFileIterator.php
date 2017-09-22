@@ -3,6 +3,7 @@ namespace Aligent\IO;
 
 use Aligent\IO\Exception\IOObjectAlreadyInitializedException;
 use Aligent\IO\Exception\IOException;
+use Aligent\IO\IOIteratorInterface;
 
 /**
  * class IOFileIterator

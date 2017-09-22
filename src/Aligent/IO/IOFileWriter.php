@@ -2,6 +2,7 @@
 namespace Aligent\IO;
 
 use Aligent\IO\Exception\IOObjectAlreadyInitializedException;
+use Aligent\IO\IOWriterInterface;
 
 /**
  * class IoFileWriter

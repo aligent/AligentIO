@@ -2,6 +2,8 @@
 
 namespace Aligent\IO;
 
+use Aligent\IO\IOFileWriter;
+
 /**
  * class IOFixedWidthFileWriter
  * 

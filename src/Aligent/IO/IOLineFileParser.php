@@ -1,6 +1,8 @@
 <?php
 namespace Aligent\IO;
 
+use Aligent\IO\IOParserInterface;
+
 /**
  *
  * @author luke

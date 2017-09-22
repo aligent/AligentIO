@@ -2,6 +2,7 @@
 namespace Aligent\IO;
 
 use Aligent\IO\IOLineFileParser;
+use Aligent\IO\IOFileIterator;
 
 /**
  * @author luke
