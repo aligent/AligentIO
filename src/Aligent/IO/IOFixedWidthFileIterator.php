@@ -1,6 +1,8 @@
 <?php
+namespace Aligent\IO;
 
-require_once 'IOFileIterator.php';
+use Aligent\IO\IOFileIterator;
+use Aligent\IO\IONotImplementedYetException;
 
 class IOFixedWidthFileIterator extends IOFileIterator {
     

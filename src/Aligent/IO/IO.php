@@ -1,6 +1,14 @@
 <?php
+namespace Aligent\IO;
 
-require_once 'IOExceptions.php';
+use Aligent\IO\Exception\IOEndOfLineSeparatorContainedInLineException;
+use Aligent\IO\Exception\IOFieldOverflowException;
+use Aligent\IO\Exception\IOIllegalParameterException;
+use Aligent\IO\Exception\IOInputTooShortException;
+use Aligent\IO\Exception\IOInputTooLongException;
+use Aligent\IO\Exception\IONotImplementedYetException;
+use Aligent\IO\Exception\IOTooManyFieldsException;
+use Aligent\IO\Exception\IOTooFewFieldsException;
 
 class IO {
 

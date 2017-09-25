@@ -1,9 +1,10 @@
 <?php
-
-require_once dirname(__FILE__) . '/../../IO/IOFixedWidthFileWriter.php';
+require_once dirname(__FILE__) . "/../../vendor/autoload.php";
 require_once dirname(__FILE__) . '/../dependencies/vendor/autoload.php';
 
 use org\bovigo\vfs;
+use Aligent\IO\IOFixedWidthFileWriter;
+use Aligent\IO\Exception\IOObjectAlreadyInitializedException;
 
 /**
  * Test class for IOFixedWidthFileWriter.
@@ -104,7 +105,7 @@ class IOFixedWidthFileWriterTest extends PHPUnit_Framework_TestCase {
     
     /**
      * @depends  testInitialize1
-     * @expectedException IOObjectAlreadyInitializedException
+     * @expectedException Aligent\IO\Exception\IOObjectAlreadyInitializedException
      */
     public function testInitializeThrowsIOObjectAlreadyInitializedExceptionOnSecondInitializationAttempt(IOFixedWidthFileWriter $fwFileWriter) {
         $fwFileWriter->initialize();

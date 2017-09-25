@@ -1,7 +1,7 @@
 <?php
+namespace Aligent\IO;
 
-require_once 'IO.php';
-require_once 'IOFileWriter.php';
+use Aligent\IO\IOFileWriter;
 
 /**
  * @author luke

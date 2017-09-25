@@ -1,8 +1,9 @@
 <?php
+namespace Aligent\IO;
 
-require_once 'IOIteratorInterface.php';
-require_once 'IOFieldProcessor.php';
-require_once 'IO.php';
+use Aligent\IO\Exception\IOObjectAlreadyInitializedException;
+use Aligent\IO\Exception\IOException;
+use Aligent\IO\IOIteratorInterface;
 
 /**
  * class IOFileIterator
@@ -191,7 +192,7 @@ abstract class IOFileIterator implements IOIteratorInterface {
         $this->initialized = TRUE;
         $this->exception = NULL;
         if (rewind($this->handle) === FALSE) {
-            throw new Exception(sprintf('Rewind failed in %s', __METHOD__));
+            throw new \Exception(sprintf('Rewind failed in %s', __METHOD__));
         }
         $this->key = -1;
         $this->next();

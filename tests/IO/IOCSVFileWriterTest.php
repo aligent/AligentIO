@@ -1,6 +1,5 @@
 <?php
-
-require_once dirname(__FILE__) . '/../../IO/IOCSVFileWriter.php';
+require_once dirname(__FILE__) . "/../../vendor/autoload.php";
 
 /**
  * Test class for IOCSVFileWriter.

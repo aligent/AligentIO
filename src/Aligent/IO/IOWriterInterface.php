@@ -1,5 +1,5 @@
 <?php
-require_once 'IOExceptions.php';
+namespace Aligent\IO;
 
 /**
  * class IOWriterInterface

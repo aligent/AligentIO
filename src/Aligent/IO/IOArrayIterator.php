@@ -1,6 +1,7 @@
 <?php
+namespace Aligent\IO;
 
-require_once 'IOIteratorInterface.php';
+use Aligent\IO\IOIteratorInterace;
 
 /**
  * class IOArrayIterator

@@ -1,9 +1,9 @@
 <?php
-
-require_once dirname(__FILE__) . '/../../IO/IOCSVFileIterator.php';
+require_once dirname(__FILE__) . "/../../vendor/autoload.php";
 require_once dirname(__FILE__) . '/../dependencies/vendor/autoload.php';
 
 use org\bovigo\vfs;
+use Aligent\IO\IOCSVFileIterator;
 
 /**
  * Test class for IOCSVFileIterator.
@@ -104,7 +104,7 @@ EOD
     }
 
     /**
-     * @expectedException IOObjectAlreadyInitializedException
+     * @expectedException Aligent\IO\Exception\IOObjectAlreadyInitializedException
      */
     public function testInitializeCanOnlyBeCalledOnce1() {
         $this->csvFileIterator->initialize($this->fieldProperties, TRUE);
@@ -170,7 +170,7 @@ EOD
      */
     public function testNotIsHeaderMatch3ProducesIOTooManyFieldsException(IOCSVFileIterator $csvFileIterator) {
         $exception = $csvFileIterator->getException();
-        $this->assertSame('IOTooManyFieldsException', get_class($exception));
+        $this->assertSame('Aligent\IO\Exception\IOTooManyFieldsException', get_class($exception));
         return $csvFileIterator;
     }
 
@@ -197,7 +197,7 @@ EOD
      */
     public function testNotIsHeaderMatch4ProducesIOTooFewFieldsException(IOCSVFileIterator $csvFileIterator) {
         $exception = $csvFileIterator->getException();
-        $this->assertSame('IOTooFewFieldsException', get_class($exception));
+        $this->assertSame('Aligent\IO\Exception\IOTooFewFieldsException', get_class($exception));
     }
 
 }

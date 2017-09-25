@@ -1,6 +1,7 @@
 <?php
+require_once dirname(__FILE__) . "/../../vendor/autoload.php";
 
-require_once dirname(__FILE__) . '/../../IO/IO.php';
+use Aligent\IO\IO;
 
 /**
  * Test class for IO::Str_getfw.
@@ -30,7 +31,7 @@ class IOStr_getfwTest extends PHPUnit_Framework_TestCase {
     }
 
     /**
-     * @expectedException IOIllegalParameterException
+     * @expectedException Aligent\IO\Exception\IOIllegalParameterException
      * @dataProvider str_getfwThrowsIOIllegalParameterExceptionWhenFieldWidthsIsArrayOfNotIntsProvider
      */
     public function testStr_getfwThrowsIOIllegalParameterExceptionWhenFieldWidthsIsArrayOfNotInts($string, array $fieldWidths) {
@@ -45,14 +46,14 @@ class IOStr_getfwTest extends PHPUnit_Framework_TestCase {
     }
 
     /**
-     * @expectedException IOInputTooShortException
+     * @expectedException Aligent\IO\Exception\IOInputTooShortException
      */
     public function testStr_getfwThrowsIOInputTooShortException() {
         IO::str_getfw('abcdefgh', array(3, 3, 3));
     }
 
     /**
-     * @expectedException IOInputTooLongException
+     * @expectedException Aligent\IO\Exception\IOInputTooLongException
      */
     public function testStr_getfwThrowsIOInputTooLongException() {
         IO::str_getfw('abcdefg', array(3, 3));

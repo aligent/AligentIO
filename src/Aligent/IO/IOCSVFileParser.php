@@ -1,6 +1,7 @@
 <?php
+namespace Aligent\IO;
 
-require_once 'IOParserInterface.php';
+use Aligent\IO\IOParserInterface;
 
 /**
  * class IOCSVFileIterator

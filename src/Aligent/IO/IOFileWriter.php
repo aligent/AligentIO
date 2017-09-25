@@ -1,7 +1,8 @@
 <?php
+namespace Aligent\IO;
 
-require_once 'IOWriterInterface.php';
-require_once 'IOFieldProcessor.php';
+use Aligent\IO\Exception\IOObjectAlreadyInitializedException;
+use Aligent\IO\IOWriterInterface;
 
 /**
  * class IoFileWriter
@@ -102,7 +103,7 @@ abstract class IOFileWriter implements IOWriterInterface {
         return $this->_write($fieldProcessor->processFields($data, 'writeProcessor'), $fieldProcessor);
     }
     
-    public function setLinesWritten(int $iLinesWritten){
+    public function setLinesWritten($iLinesWritten){
         $this->linesWritten += $iLinesWritten;
     }
     
