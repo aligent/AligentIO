@@ -112,7 +112,8 @@ abstract class IOFileIterator implements IOIteratorInterface {
             $this->_fieldProcessor = $fieldProperties;
         } else {
             $this->_fieldProcessor = new IOFieldProcessor((array) $fieldProperties);
-        }        $this->hasHeaderRow = $hasHeaderRow;
+        }
+        $this->hasHeaderRow = $hasHeaderRow;
         $isHeaderMatch = $this->isHeaderMatch();
         $this->rewind();
         return $isHeaderMatch;
